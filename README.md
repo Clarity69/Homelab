@@ -1,4 +1,17 @@
-# My homelab Documentation
+<div align="center">
+
+# Personal Homelab Infrastructure
+
+[![OS - Ubuntu Server LTS](https://img.shields.io/badge/OS-Ubuntu_Server_LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://ubuntu.com/server)
+[![Docker Engine](https://img.shields.io/badge/Container-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Tailscale Enabled](https://img.shields.io/badge/Network-Tailscale-242424?style=for-the-badge&logo=tailscale&logoColor=white)](https://tailscale.com/)
+[![Status - Active](https://img.shields.io/badge/Status-Operational-44CC11?style=for-the-badge)](https://github.com)
+
+*Repositori terpusat untuk konfigurasi Docker Compose, arsitektur jaringan, dan panduan disaster recovery homelab.*
+
+</div>
+
+---
 
 ## Hosted Services & Port Allocations
 
@@ -38,7 +51,7 @@
                                    |
                                    v
 +-----------------------------------------------------------------------+
-|                     HOMELAB SERVER (Arch Linux)                       |
+|                  HOMELAB SERVER (Ubuntu Server LTS)                   |
 |                                                                       |
 |  +-----------------------------------------------------------------+  |
 |  |                   DOCKER CONTAINER ENVIRONMENT                  |  |
@@ -52,9 +65,3 @@
 |  |   [Ingress]        ---> Cloudflare Tunnel & Tailscale           |  |
 |  +-----------------------------------------------------------------+  |
 +-----------------------------------------------------------------------+
-```
-## Specification
-- CPU: i3 2120
-- RAM   : 8 GB/DDR 3
-- Storage   : 256 GB 
-- OS:  Ubuntu Server LTS
