@@ -65,3 +65,18 @@
 |  |   [Ingress]        ---> Cloudflare Tunnel & Tailscale           |  |
 |  +-----------------------------------------------------------------+  |
 +-----------------------------------------------------------------------+
+```
+
+## Specification
+- CPU: Intel® Core™ i3-2120 (2 Cores, 4 Threads @ 3.30 GHz)
+
+- RAM: 8 GB DDR3
+
+- Storage: 256 GB HDD
+
+- OS: Ubuntu Server LTS (x86_64)
+
+## Navigation/Documentation
+- docs/recovery-protocol.md — Panduan penanganan insiden darurat, reset password admin (Homarr, Portainer, Beszel Hub), dan perbaikan database lock.
+
+- docker/ — Direktori berkas docker-compose.yml untuk setiap stack layanan.
