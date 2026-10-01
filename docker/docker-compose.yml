@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # DASHBOARD & MONITORING
+  # ==========================================
+  homarr:
+    image: ghcr.io/ajnart/homarr:latest
+    container_name: homarr
+    restart: unless-stopped
+    ports:
+      - "4000:7575"
+    volumes:
+      - ./homarr/configs:/app/data/configs
+      - ./homarr/icons:/app/public/icons
+      - ./homarr/data:/app/data
+    environment:
+      - TZ=Asia/Makassar
+
+  beszel-hub:
+    image: henrygd/beszel:latest
+    container_name: beszel-hub
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./beszel/data:/beszel_data
+    environment:
+      - PORT=8090
+
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - PORT=45876
+      # - KEY="YOUR_BESZEL_HUB_PUBLIC_KEY" # Tambahkan public key dari Hub jika dipakai
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./uptime-kuma/data:/app/data
+
+  # ==========================================
+  # CONTAINER MANAGEMENT
+  # ==========================================
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer/data:/data
+
+  # ==========================================
+  # CLOUD STORAGE
+  # ==========================================
+  nextcloud-db:
+    image: mariadb:10.11
+    container_name: nextcloud_db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - ./nextcloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${NEXTCLOUD_MYSQL_ROOT_PASSWORD:-secretroot}
+      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD:-secretpass}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  nextcloud-app:
+    image: nextcloud:latest
+    container_name: nextcloud_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - nextcloud-db
+    volumes:
+      - ./nextcloud/html:/var/www/html
+    environment:
+      - MYSQL_HOST=nextcloud-db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD:-secretpass}
+
+  # ==========================================
+  # PRODUCTIVITY APP (LARAVEL KANBAN)
+  # ==========================================
+  kanban-mysql:
+    image: mysql:8.0
+    container_name: kanban-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./kanban/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${KANBAN_MYSQL_ROOT_PASSWORD:-secretroot}
+      - MYSQL_DATABASE=kanban
+      - MYSQL_USER=kanban_user
+      - MYSQL_PASSWORD=${KANBAN_MYSQL_PASSWORD:-secretpass}
+
+  kanban-laravel:
+    image: custom-kanban-laravel:latest # Sesuaikan nama image lokal kamu
+    container_name: kanban-laravel
+    restart: unless-stopped
+    depends_on:
+      - kanban-mysql
+    volumes:
+      - ./kanban/app:/var/www
+
+  kanban-nginx:
+    image: nginx:alpine
+    container_name: kanban-nginx
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    depends_on:
+      - kanban-laravel
+    volumes:
+      - ./kanban/app:/var/www
+      - ./kanban/nginx.conf:/etc/nginx/conf.d/default.conf
+
+  # ==========================================
+  # NETWORKING & TUNNELS
+  # ==========================================
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare_tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:-your_token_here}
