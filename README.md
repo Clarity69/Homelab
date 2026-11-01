@@ -1,6 +1,6 @@
 <div align="center">
 
-# Personal Homelab Infrastructure
+# Personal Homelab Infrastructures
 
 [![OS - Ubuntu Server LTS](https://img.shields.io/badge/OS-Ubuntu_Server_LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://ubuntu.com/server)
 [![Docker Engine](https://img.shields.io/badge/Container-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
