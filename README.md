@@ -77,6 +77,6 @@
 - OS: Ubuntu Server LTS (x86_64)
 
 ## Navigation/Documentation
-- docs/recovery-protocol.md — Panduan penanganan insiden darurat, reset password admin (Homarr, Portainer, Beszel Hub), dan perbaikan database lock.
+- docs/recovery-protocol.md — Panduan penanganan insiden darurat, reset password admin (Homarr, Portainer, Beszel Hub), dan perbaikan database lock
 
 - docker/ — Direktori berkas docker-compose.yml untuk setiap stack layanan
