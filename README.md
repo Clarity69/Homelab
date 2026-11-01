@@ -79,4 +79,4 @@
 ## Navigation/Documentation
 - docs/recovery-protocol.md — Panduan penanganan insiden darurat, reset password admin (Homarr, Portainer, Beszel Hub), dan perbaikan database lock.
 
-- docker/ — Direktori berkas docker-compose.yml untuk setiap stack layanan.
+- docker/ — Direktori berkas docker-compose.yml untuk setiap stack layanan
